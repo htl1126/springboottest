@@ -14,11 +14,18 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SimpleFilter extends OncePerRequestFilter {
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest req) throws ServletException {
+        String path = req.getCharacterEncoding();
+        return !"UTF-8".equals(path); // process requests in UTF-8 encoding
+    }
+
+    @Override
     protected void doFilterInternal(
-        HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws
+        HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws
         ServletException, IOException {
         System.out.println("At SimpleFilter");
-        chain.doFilter(request, response);
+        System.out.println(req.getCharacterEncoding());
+        chain.doFilter(req, resp);
     }
 
 }
