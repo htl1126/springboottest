@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/* DB model for user_login */
 @Data
 @Entity
 @NoArgsConstructor

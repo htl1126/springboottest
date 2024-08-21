@@ -1,6 +1,7 @@
 package com.example.springboottest.filter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,18 +15,18 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SimpleFilter extends OncePerRequestFilter {
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest req) throws ServletException {
-        String path = req.getCharacterEncoding();
-        return !"UTF-8".equals(path); // process requests in UTF-8 encoding
-    }
-
-    @Override
     protected void doFilterInternal(
         HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws
         ServletException, IOException {
-        System.out.println("At SimpleFilter");
-        System.out.println(req.getCharacterEncoding());
-        chain.doFilter(req, resp);
+        String auth = Objects.toString(req.getHeader("Authorization"));
+        if (auth.contains("Bearer")) {
+            System.out.println("At SimpleFilter");
+            chain.doFilter(req, resp);
+        } else {
+            resp.setCharacterEncoding("UTF-8");
+            resp.setContentType("application/json; charset=utf-8");
+            resp.setStatus(401);
+        }
     }
 
 }
