@@ -4,20 +4,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/* DB model for user_login */
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_login")
-public class UserLogin {
+@Builder
+@Table(name = "user_info")
+public class UserInfo {
 
     @Id
-    private Integer id;
-    private String username;
-    private String password;
+    private String id;
+    private String passwordHash;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String positionId;
+    private String supervisorId;
 
 }
