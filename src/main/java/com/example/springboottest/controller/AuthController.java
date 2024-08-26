@@ -3,7 +3,9 @@ package com.example.springboottest.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springboottest.entity.RegisterRequest;
+import com.example.springboottest.entity.LoginRequest;
 import com.example.springboottest.service.AuthService;
+import com.example.springboottest.entity.AuthServiceResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,24 +27,14 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
-        return ResponseEntity.ok(authService.register(req));
+        AuthServiceResponse resp = authService.register(req);
+        return new ResponseEntity<>(resp.message, resp.status);
     }
-    
 
-    /*
     @PostMapping("/login")
-    public String postMethodName(@RequestBody LoginRequest req) {
-        User userModel = userRepository.findByUsername(req.username);
-
-        if (userModel.getLoginUsername().equals(req.username) &&
-        userModel.getPasswordHash().equals(req.password)) {
-            System.out.println("Login succeeded");
-            return "Login succeeded";
-        } else {
-            System.out.println("Login failed");
-            return "Login failed";
-        }
+    public ResponseEntity<String> login(@RequestBody LoginRequest req) {
+        AuthServiceResponse resp = authService.login(req);
+        return new ResponseEntity<>(resp.message, resp.status);
     }
-    */
 
 }

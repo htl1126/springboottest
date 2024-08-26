@@ -2,5 +2,5 @@ package com.example.springboottest.entity;
 
 /* convert a JSON request body into an object */
 public class LoginRequest {
-    public String username, password;
+    public String email, password;
 }
