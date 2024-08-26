@@ -1,12 +1,15 @@
 package com.example.springboottest.service;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.Objects;
 
-import com.example.springboottest.repository.UserRepository;
+import com.example.springboottest.repository.LoginSessionRepository;
+import com.example.springboottest.repository.UserInfoRepository;
 
 import lombok.AllArgsConstructor;
 
+import com.example.springboottest.model.LoginSession;
 import com.example.springboottest.model.UserInfo;
 import com.example.springboottest.entity.RegisterRequest;
 import com.example.springboottest.entity.LoginRequest;
@@ -23,11 +26,13 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    UserRepository userRepository;
+    UserInfoRepository userInfoRepository;
+    @Autowired
+    LoginSessionRepository loginSessionRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private UserInfo getUserObjectByEmail(String email) {
-        UserInfo user = userRepository.findByEmail(email);
+        UserInfo user = userInfoRepository.findByEmail(email);
 
         return user;
     }
@@ -49,11 +54,12 @@ public class AuthService {
             .firstName(req.firstName)
             .lastName(req.lastName)
             .passwordHash(passwordEncoder.encode(req.password))
-            .positionId("positionID")
-            .supervisorId("supervisorID")
+            .positionID("positionID")
+            .supervisorID("supervisorID")
             .id(UUID.randomUUID().toString())
             .build();
-        userRepository.save(newUser);
+        userInfoRepository.save(newUser);
+
         resp.status = HttpStatus.OK;
         resp.message = "register successful";
         return resp;
@@ -62,7 +68,7 @@ public class AuthService {
     // login
     // 1. validate account
     //    account exists;
-    // 2. write to session table
+    //    already login;
     public AuthServiceResponse login(LoginRequest req) {
         UserInfo user = getUserObjectByEmail(req.email);
         AuthServiceResponse resp = new AuthServiceResponse();
@@ -73,8 +79,17 @@ public class AuthService {
             return resp;
         } else {
             // write to session table
+            OffsetDateTime now = OffsetDateTime.now();
+            LoginSession newSession = LoginSession.builder()
+                .ID(UUID.randomUUID().toString())
+                .userID(user.getId())
+                .createdAt(now)
+                .expireAt(now.plusHours(1)) // should move this to config
+                .build();
+            loginSessionRepository.save(newSession);
+
             resp.status = HttpStatus.OK;
-            resp.message = "account exists";
+            resp.message = "login successful";
             return resp;
         }
     }
