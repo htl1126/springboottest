@@ -10,8 +10,10 @@ import com.example.springboottest.entity.AuthServiceResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
 
 
 @RestController
@@ -37,4 +39,10 @@ public class AuthController {
         return new ResponseEntity<>(resp.message, resp.status);
     }
 
+    @GetMapping("/UserInfo")
+    public ResponseEntity<String> getUserInfo(@RequestHeader("X-SESSION-ID") String sessionID) {
+        AuthServiceResponse resp = authService.getUserInfo(sessionID);
+        return new ResponseEntity<>(resp.message, resp.status);
+    }
+    
 }

@@ -3,6 +3,7 @@ package com.example.springboottest.service;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.Objects;
+import java.util.Optional;
 
 import com.example.springboottest.repository.LoginSessionRepository;
 import com.example.springboottest.repository.UserInfoRepository;
@@ -36,12 +37,20 @@ public class AuthService {
 
         return user;
     }
+
+    public AuthServiceResponse getUserInfo(String sessionID) {
+        AuthServiceResponse resp = new AuthServiceResponse();
+        resp.status = HttpStatus.OK;
+        LoginSession loginSession = loginSessionRepository.findByID(sessionID);
+        Optional<UserInfo> user = userInfoRepository.findById(loginSession.getUserID());
+        resp.message = "account: " + user.get().getEmail();
+        return resp;
+    }
     
     public AuthServiceResponse register(RegisterRequest req) {
         // cases: 1. account already exists (ok)
         //        2. other exceptions (use Try and Catch)
         AuthServiceResponse resp = new AuthServiceResponse();
-
         UserInfo user = getUserObjectByEmail(req.email);
         if (!Objects.isNull(user)) {
             resp.status = HttpStatus.BAD_REQUEST;
@@ -65,10 +74,6 @@ public class AuthService {
         return resp;
     }
 
-    // login
-    // 1. validate account
-    //    account exists;
-    //    already login;
     public AuthServiceResponse login(LoginRequest req) {
         UserInfo user = getUserObjectByEmail(req.email);
         AuthServiceResponse resp = new AuthServiceResponse();
@@ -80,8 +85,9 @@ public class AuthService {
         } else {
             // write to session table
             OffsetDateTime now = OffsetDateTime.now();
+            String newSessionID = UUID.randomUUID().toString();
             LoginSession newSession = LoginSession.builder()
-                .ID(UUID.randomUUID().toString())
+                .ID(newSessionID)
                 .userID(user.getId())
                 .createdAt(now)
                 .expireAt(now.plusHours(1)) // should move this to config
@@ -89,7 +95,7 @@ public class AuthService {
             loginSessionRepository.save(newSession);
 
             resp.status = HttpStatus.OK;
-            resp.message = "login successful";
+            resp.message = newSessionID;
             return resp;
         }
     }
