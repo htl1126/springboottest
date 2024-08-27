@@ -3,15 +3,16 @@ package com.example.springboottest.service;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.example.springboottest.repository.LoginSessionRepository;
+import com.example.springboottest.repository.PositionInfoRepository;
 import com.example.springboottest.repository.UserInfoRepository;
 
 import lombok.AllArgsConstructor;
 
 import com.example.springboottest.model.LoginSession;
 import com.example.springboottest.model.UserInfo;
+import com.example.springboottest.model.PositionInfo;
 import com.example.springboottest.entity.RegisterRequest;
 import com.example.springboottest.entity.LoginRequest;
 import com.example.springboottest.entity.AuthServiceResponse;
@@ -30,6 +31,8 @@ public class AuthService {
     UserInfoRepository userInfoRepository;
     @Autowired
     LoginSessionRepository loginSessionRepository;
+    @Autowired
+    PositionInfoRepository positionInfoRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private UserInfo getUserObjectByEmail(String email) {
@@ -42,8 +45,14 @@ public class AuthService {
         AuthServiceResponse resp = new AuthServiceResponse();
         resp.status = HttpStatus.OK;
         LoginSession loginSession = loginSessionRepository.findByID(sessionID);
-        Optional<UserInfo> user = userInfoRepository.findById(loginSession.getUserID());
-        resp.message = "account: " + user.get().getEmail();
+        UserInfo user = userInfoRepository.findById(loginSession.getUserID()).get();
+        UserInfo supervisor = userInfoRepository.findById(user.getSupervisorID()).get();
+        PositionInfo position = positionInfoRepository.findById(user.getPositionID()).get();
+        resp.message = "account(email): " + user.getEmail() + "\n" +
+            "first name: " + user.getFirstName() + "\n" +
+            "last name: " + user.getLastName() + "\n" +
+            "position: " + position.getName() + "\n" +
+            "supervisor: " + supervisor.getFirstName() + " " + supervisor.getLastName() + "\n";
         return resp;
     }
     

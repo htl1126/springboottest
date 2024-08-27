@@ -23,7 +23,7 @@ public class AuthController {
     AuthService authService;
 
     @GetMapping("/healthcheck")
-    public String healthCheck() {
+    public String healthcheck() {
         return "This service is running healthy";
     }
 
@@ -39,7 +39,7 @@ public class AuthController {
         return new ResponseEntity<>(resp.message, resp.status);
     }
 
-    @GetMapping("/UserInfo")
+    @GetMapping("/user")
     public ResponseEntity<String> getUserInfo(@RequestHeader("X-SESSION-ID") String sessionID) {
         AuthServiceResponse resp = authService.getUserInfo(sessionID);
         return new ResponseEntity<>(resp.message, resp.status);
