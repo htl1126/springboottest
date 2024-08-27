@@ -15,10 +15,11 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)  //禁止CSRF（跨站請求偽造）保護。
-                .authorizeHttpRequests((authorize) -> authorize //對所有訪問HTTP端點的HttpServletRequest進行限制
-                        .anyRequest().permitAll()   //其他尚未匹配到的路徑都需要身份驗證
-                );
+        http.csrf(AbstractHttpConfigurer::disable)  // disable CSRF
+            .authorizeHttpRequests(
+                (authorize) -> authorize.anyRequest()
+                                .permitAll()
+            );
         return http.build();
     }
 }
