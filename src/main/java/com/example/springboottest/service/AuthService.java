@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import com.example.springboottest.repository.LoginSessionRepository;
 import com.example.springboottest.repository.PositionInfoRepository;
+import com.example.springboottest.repository.RoleInfoRepository;
 import com.example.springboottest.repository.UserInfoRepository;
 
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 import com.example.springboottest.model.LoginSession;
 import com.example.springboottest.model.UserInfo;
 import com.example.springboottest.model.PositionInfo;
+import com.example.springboottest.model.RoleInfo;
 import com.example.springboottest.entity.RegisterRequest;
 import com.example.springboottest.entity.LoginRequest;
 import com.example.springboottest.entity.AuthServiceResponse;
@@ -33,6 +35,8 @@ public class AuthService {
     LoginSessionRepository loginSessionRepository;
     @Autowired
     PositionInfoRepository positionInfoRepository;
+    @Autowired
+    RoleInfoRepository roleInfoRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private UserInfo getUserObjectByEmail(String email) {
@@ -48,9 +52,11 @@ public class AuthService {
         UserInfo user = userInfoRepository.findById(loginSession.getUserID()).get();
         UserInfo supervisor = userInfoRepository.findById(user.getSupervisorID()).get();
         PositionInfo position = positionInfoRepository.findById(user.getPositionID()).get();
+        RoleInfo role = roleInfoRepository.findById(user.getRoleID()).get();
         resp.message = "account(email): " + user.getEmail() + "\n" +
             "first name: " + user.getFirstName() + "\n" +
             "last name: " + user.getLastName() + "\n" +
+            "role: " + role.getName() + "\n" +
             "position: " + position.getName() + "\n" +
             "supervisor: " + supervisor.getFirstName() + " " + supervisor.getLastName() + "\n";
         return resp;
@@ -68,13 +74,14 @@ public class AuthService {
         }
 
         UserInfo newUser = UserInfo.builder()
+            .id(UUID.randomUUID().toString())
+            .passwordHash(passwordEncoder.encode(req.password))
             .email(req.email)
             .firstName(req.firstName)
             .lastName(req.lastName)
-            .passwordHash(passwordEncoder.encode(req.password))
             .positionID("positionID")
             .supervisorID("supervisorID")
-            .id(UUID.randomUUID().toString())
+            .roleID("roleID")
             .build();
         userInfoRepository.save(newUser);
 

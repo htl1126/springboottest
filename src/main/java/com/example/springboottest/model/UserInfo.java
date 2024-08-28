@@ -27,5 +27,7 @@ public class UserInfo {
     private String positionID;
     @Column(name = "supervisor_id")
     private String supervisorID;
+    @Column(name = "role_id")
+    private String roleID;
 
 }
