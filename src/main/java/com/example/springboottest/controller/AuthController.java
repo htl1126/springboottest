@@ -20,11 +20,6 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @GetMapping("/healthcheck")
-    public String healthcheck() {
-        return "This service is running healthy";
-    }
-
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
         AuthServiceResponse resp = authService.register(req);
