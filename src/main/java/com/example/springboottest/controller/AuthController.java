@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-
-
 @RestController
 public class AuthController {
 
@@ -44,5 +42,5 @@ public class AuthController {
         AuthServiceResponse resp = authService.getUserInfo(sessionID);
         return new ResponseEntity<>(resp.message, resp.status);
     }
-    
+
 }

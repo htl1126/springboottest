@@ -29,9 +29,8 @@ public class SessionValidateFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(
-        HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws
-        ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain)
+            throws ServletException, IOException {
         LoginSession loginSession = loginSessionRepository.findByID(req.getHeader("X-SESSION-ID"));
         OffsetDateTime now = OffsetDateTime.now();
         if (Objects.isNull(loginSession) || now.isAfter(loginSession.getExpireAt())) {

@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Entity
 @NoArgsConstructor
@@ -19,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "login_session")
 public class LoginSession {
-    
+
     @Id
     private String ID;
     @Column(name = "user_id")

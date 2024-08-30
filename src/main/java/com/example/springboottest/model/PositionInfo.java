@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Entity
 @NoArgsConstructor
@@ -16,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "position_info")
 public class PositionInfo {
-    
+
     @Id
     private String ID;
     private String Name;
