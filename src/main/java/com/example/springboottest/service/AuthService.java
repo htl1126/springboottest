@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import com.example.springboottest.repository.LoginSessionRepository;
 import com.example.springboottest.repository.PositionInfoRepository;
-import com.example.springboottest.repository.RoleInfoRepository;
+import com.example.springboottest.repository.RolesRepository;
 import com.example.springboottest.repository.UsersRepository;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 import com.example.springboottest.model.LoginSession;
 import com.example.springboottest.model.Users;
 import com.example.springboottest.model.PositionInfo;
-import com.example.springboottest.model.RoleInfo;
+import com.example.springboottest.model.Roles;
 import com.example.springboottest.entity.RegisterRequest;
 import com.example.springboottest.entity.LoginRequest;
 import com.example.springboottest.entity.AuthServiceResponse;
@@ -36,7 +36,7 @@ public class AuthService {
     @Autowired
     PositionInfoRepository positionInfoRepository;
     @Autowired
-    RoleInfoRepository roleInfoRepository;
+    RolesRepository roleInfoRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private Users getUserObjectByEmail(String email) {
@@ -52,7 +52,7 @@ public class AuthService {
         Users user = userInfoRepository.findById(loginSession.getUserID()).get();
         Users supervisor = userInfoRepository.findById(user.getSupervisorID()).get();
         PositionInfo position = positionInfoRepository.findById(user.getPositionID()).get();
-        RoleInfo role = roleInfoRepository.findById(user.getRoleID()).get();
+        Roles role = roleInfoRepository.findById(user.getRoleID()).get();
         resp.message = "account(email): " + user.getEmail() + "\n" +
             "first name: " + user.getFirstName() + "\n" +
             "last name: " + user.getLastName() + "\n" +

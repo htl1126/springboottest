@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "role_info")
-public class RoleInfo {
+@Table(name = "roles")
+public class Roles {
 
     @Id
     private String ID;
