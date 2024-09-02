@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "user_info")
-public class UserInfo {
+@Table(name = "users")
+public class Users {
 
     @Id
     private String id;

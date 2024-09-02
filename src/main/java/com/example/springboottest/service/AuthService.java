@@ -7,12 +7,12 @@ import java.util.Objects;
 import com.example.springboottest.repository.LoginSessionRepository;
 import com.example.springboottest.repository.PositionInfoRepository;
 import com.example.springboottest.repository.RoleInfoRepository;
-import com.example.springboottest.repository.UserInfoRepository;
+import com.example.springboottest.repository.UsersRepository;
 
 import lombok.AllArgsConstructor;
 
 import com.example.springboottest.model.LoginSession;
-import com.example.springboottest.model.UserInfo;
+import com.example.springboottest.model.Users;
 import com.example.springboottest.model.PositionInfo;
 import com.example.springboottest.model.RoleInfo;
 import com.example.springboottest.entity.RegisterRequest;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    UserInfoRepository userInfoRepository;
+    UsersRepository userInfoRepository;
     @Autowired
     LoginSessionRepository loginSessionRepository;
     @Autowired
@@ -39,18 +39,18 @@ public class AuthService {
     RoleInfoRepository roleInfoRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    private UserInfo getUserObjectByEmail(String email) {
-        UserInfo user = userInfoRepository.findByEmail(email);
+    private Users getUserObjectByEmail(String email) {
+        Users user = userInfoRepository.findByEmail(email);
 
         return user;
     }
 
-    public AuthServiceResponse getUserInfo(String sessionID) {
+    public AuthServiceResponse getUser(String sessionID) {
         AuthServiceResponse resp = new AuthServiceResponse();
         resp.status = HttpStatus.OK;
         LoginSession loginSession = loginSessionRepository.findByID(sessionID);
-        UserInfo user = userInfoRepository.findById(loginSession.getUserID()).get();
-        UserInfo supervisor = userInfoRepository.findById(user.getSupervisorID()).get();
+        Users user = userInfoRepository.findById(loginSession.getUserID()).get();
+        Users supervisor = userInfoRepository.findById(user.getSupervisorID()).get();
         PositionInfo position = positionInfoRepository.findById(user.getPositionID()).get();
         RoleInfo role = roleInfoRepository.findById(user.getRoleID()).get();
         resp.message = "account(email): " + user.getEmail() + "\n" +
@@ -66,14 +66,14 @@ public class AuthService {
         // cases: 1. account already exists (ok)
         //        2. other exceptions (use Try and Catch)
         AuthServiceResponse resp = new AuthServiceResponse();
-        UserInfo user = getUserObjectByEmail(req.email);
+        Users user = getUserObjectByEmail(req.email);
         if (!Objects.isNull(user)) {
             resp.status = HttpStatus.BAD_REQUEST;
             resp.message = "account already exists";
             return resp;
         }
 
-        UserInfo newUser = UserInfo.builder()
+        Users newUser = Users.builder()
             .id(UUID.randomUUID().toString())
             .passwordHash(passwordEncoder.encode(req.password))
             .email(req.email)
@@ -91,7 +91,7 @@ public class AuthService {
     }
 
     public AuthServiceResponse login(LoginRequest req) {
-        UserInfo user = getUserObjectByEmail(req.email);
+        Users user = getUserObjectByEmail(req.email);
         AuthServiceResponse resp = new AuthServiceResponse();
 
         if (Objects.isNull(user)) {

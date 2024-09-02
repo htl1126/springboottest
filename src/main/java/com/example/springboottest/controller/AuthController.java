@@ -33,8 +33,8 @@ public class AuthController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<String> getUserInfo(@RequestHeader("X-SESSION-ID") String sessionID) {
-        AuthServiceResponse resp = authService.getUserInfo(sessionID);
+    public ResponseEntity<String> getUser(@RequestHeader("X-SESSION-ID") String sessionID) {
+        AuthServiceResponse resp = authService.getUser(sessionID);
         return new ResponseEntity<>(resp.message, resp.status);
     }
 
