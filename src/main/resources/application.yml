@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: springboottest
+  # PostgreSQL
+  datasource:
+    url: jdbc:postgresql://localhost:5432/erp
+    username: postgres
+    password: hCRn1T8L
+    driver-class-name: org.postgresql.Driver
+  # JPA
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    # need to use none explicitly
+    hibernate:
+      ddl-auto: none
