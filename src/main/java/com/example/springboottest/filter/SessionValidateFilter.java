@@ -25,7 +25,18 @@ public class SessionValidateFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest req) throws ServletException {
         String path = req.getRequestURI();
-        return path.equals("/register") || path.equals("/login") || path.equals("/healthcheck");
+        String[] paths = {"/register", "/login", "/healthcheck", "/v3/api-docs",
+            "/swagger-ui.html", "/swagger-ui/index.html",
+            "/swagger-ui-bundle.js"}; // paths that don't need session tokens
+        return true;
+        /*
+        for (int i = 0; i < paths.length; i++) {
+            if (path.equals(paths[i])) {
+                return true;
+            }
+        }
+        return false;
+        */
     }
 
     @Override
