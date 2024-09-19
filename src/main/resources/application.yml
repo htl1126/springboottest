@@ -21,7 +21,6 @@ spring:
           wellink:
             provider: entraid
             client-id: 1d331754-eb28-4706-a87a-7746b76a710e
-            client-secret: 3Qf8Q~qn.qBGPJm6J8jnKYtGHDV7Ed9_vxT52cai
             scope:
             - openid
             - email
