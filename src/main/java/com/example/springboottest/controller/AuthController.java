@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Tag(name = "controller Authentication Controller")
 @RestController
@@ -26,6 +28,21 @@ public class AuthController {
 
     @Autowired
     AuthService authService;
+
+    @GetMapping("/")
+    public String index() {
+        return "login successfully";
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Say hello!";
+    }
+
+    @GetMapping("/myinfo")
+    public String loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
+        return "My name is " + principal.getAttribute("name");
+    }
 
     @Operation(summary = "register", description = "register or create a new account")
     @ApiResponses({

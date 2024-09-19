@@ -14,6 +14,21 @@ spring:
     # need to use none explicitly
     hibernate:
       ddl-auto: none
+  security:
+    oauth2:
+      client:
+        registration:
+          wellink:
+            provider: entraid
+            client-id: 1d331754-eb28-4706-a87a-7746b76a710e
+            client-secret: 3Qf8Q~qn.qBGPJm6J8jnKYtGHDV7Ed9_vxT52cai
+            scope:
+            - openid
+            - email
+            - profile
+        provider:
+          entraid:
+            issuer-uri: https://login.microsoftonline.com/65f2ec61-0212-4426-b9cf-f8218312e160/v2.0
 
 springdoc:
   swagger-ui:
