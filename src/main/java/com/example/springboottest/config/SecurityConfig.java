@@ -30,7 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
             authorize -> authorize
-                .requestMatchers("/healthcheck", "/hello").permitAll()
+                .requestMatchers("/healthcheck").permitAll()
                 .anyRequest().authenticated())
             .oauth2Login(Customizer.withDefaults())
             .logout(
