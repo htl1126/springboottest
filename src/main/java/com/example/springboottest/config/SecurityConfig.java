@@ -36,9 +36,10 @@ public class SecurityConfig {
             .logout(
                 logout -> logout
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID")
+                    .deleteCookies()
+                    .clearAuthentication(true)
+                    .logoutSuccessUrl("https://login.microsoftonline.com/65f2ec61-0212-4426-b9cf-f8218312e160/oauth2/v2.0/logout?post_logout_redirect_uri=http://localhost:8080/")
             );
         return http.build();
     }

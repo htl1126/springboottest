@@ -34,11 +34,6 @@ public class AuthController {
         return "login successfully";
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Say hello!";
-    }
-
     @GetMapping("/myinfo")
     public String loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
         return "My name is " + principal.getAttribute("name");
