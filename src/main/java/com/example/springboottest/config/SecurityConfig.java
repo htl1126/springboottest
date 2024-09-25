@@ -6,6 +6,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 // @Configuration
 // @EnableWebSecurity
@@ -40,6 +41,7 @@ public class SecurityConfig {
                     .deleteCookies()
                     .clearAuthentication(true)
                     .logoutSuccessUrl("https://login.microsoftonline.com/65f2ec61-0212-4426-b9cf-f8218312e160/oauth2/v2.0/logout?post_logout_redirect_uri=http://localhost:8080/")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             );
         return http.build();
     }

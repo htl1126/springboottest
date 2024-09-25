@@ -1,5 +1,8 @@
 package com.example.springboottest.controller;
 
+import java.util.Map;
+import java.util.Collection;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springboottest.entity.RegisterRequest;
@@ -19,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+
 
 @Tag(name = "controller Authentication Controller")
 @RestController
@@ -34,9 +39,14 @@ public class AuthController {
         return "login successfully";
     }
 
-    @GetMapping("/myinfo")
-    public String loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
-        return "My name is " + principal.getAttribute("name");
+    @GetMapping("/myattr")
+    public Map<String, Object> myAttr(@AuthenticationPrincipal OAuth2User principal) {
+        return principal.getAttributes();
+    }
+
+    @GetMapping("/myauth")
+    public Collection<? extends GrantedAuthority> myAuth(@AuthenticationPrincipal OAuth2User principal) {
+        return principal.getAuthorities();
     }
 
     @Operation(summary = "register", description = "register or create a new account")
