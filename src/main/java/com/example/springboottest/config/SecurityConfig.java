@@ -32,6 +32,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
             authorize -> authorize
                 .requestMatchers("/healthcheck").permitAll()
+                .requestMatchers("/index.html", "/assets/**").permitAll()
                 .anyRequest().authenticated())
             .oauth2Login(Customizer.withDefaults())
             .logout(
