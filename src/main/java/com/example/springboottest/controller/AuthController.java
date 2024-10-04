@@ -49,7 +49,7 @@ public class AuthController {
     public ResponseEntity<Resource> getAsset(@PathVariable String staticFileName) throws IOException {
         // need to print some logs when any static file not found
         String fileExt = staticFileName.substring(staticFileName.lastIndexOf(".") + 1);
-        Path path = Paths.get("src/main/resources/static/" + staticFileName);
+        Path path = Paths.get("src/main/resources/static/assets/" + staticFileName);
         Resource resource = new UrlResource(path.toUri());
         HashMap<String, String> contentType = new HashMap<String, String>();
 
